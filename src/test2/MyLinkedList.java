@@ -18,12 +18,12 @@ public class MyLinkedList {
         header.next=header.previous=header;
     }
 
-    private LinkedListObj addBefore(LinkedListObj list,Object obj){
-        LinkedListObj element=new LinkedListObj (obj,list,list.previous);
-        element.previous.next=element;
-        element.next.previous=element;
+    public LinkedListObj addBefore(LinkedListObj obj,Object element ){
+        LinkedListObj newElement=new LinkedListObj (element,obj,obj.previous);
+        newElement.previous.next=newElement;
+        newElement.next.previous=newElement;
         size++;
-        return element;
+        return newElement;
     }
 
 //    private LinkedListObj addAfter(LinkedListObj list,Object obj){
@@ -35,6 +35,42 @@ public class MyLinkedList {
         addBefore (header,obj);
         return true;
     }
+
+    public boolean addLast(Object obj){
+        addBefore (header,obj);
+        return true;
+    }
+    public boolean addFirst(Object obj){
+        addBefore (header.next,obj);
+        return true;
+    }
+
+    public boolean contains(Object o){
+        return indexOf(o)!=-1;
+    }
+
+    public int indexOf(Object o){
+        int index=0;
+        if(o==null){
+            for(LinkedListObj obj= header.next;obj!=header;obj=obj.next){
+                if(obj.element==null){
+                    return index;
+                }
+                index++;
+            }
+        }else{
+            for(LinkedListObj obj=header.next;obj!=header;obj=obj.next){
+                if(o.equals (obj.element)){
+                    return index;
+                }
+                index++;
+            }
+        }
+        return -1;
+
+    }
+
+
     public Object getFirst(){
         if(size==0){
             throw new NoSuchElementException ();
@@ -42,6 +78,7 @@ public class MyLinkedList {
         return header.next.element;
 
     }
+
     public Object getLast(){
         if(size==0){
             throw new NoSuchElementException ();
@@ -51,7 +88,10 @@ public class MyLinkedList {
 
     public Object removeFirst(){
         return remove(header.next);
+    }
 
+    public Object removeLast(){
+        return remove(header.previous);
 
     }
 
@@ -76,6 +116,15 @@ public class MyLinkedList {
             result[i++]=obj.element;
         }
         return  result;
+    }
+
+    public String toString(){
+        StringBuffer sb=new StringBuffer ();
+       for (LinkedListObj obj=header.next;obj!=header;obj=obj.next){
+           sb.append ((String)obj.element);
+       }
+        System.out.println (sb.toString () );
+        return sb.toString ();
     }
 
 
